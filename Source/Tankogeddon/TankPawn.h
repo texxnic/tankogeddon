@@ -1,10 +1,16 @@
 #pragma once
 
+#include "Cannon.h"
 #include "CoreMinimal.h"
 #include "GameFramework/Pawn.h"
 #include "TankPawn.generated.h"
 
 class UStaticMeshComponent;
+class UCameraComponent;
+class USpringArmComponent;
+class ATankPlayerController;
+class ACannon;
+
 UCLASS()
 class TANKOGEDDON_API ATankPawn : public APawn
 {
@@ -12,8 +18,7 @@ class TANKOGEDDON_API ATankPawn : public APawn
 
 public:
 	ATankPawn();
-
-public:
+	
 	virtual void Tick(float DeltaTime) override;
 
 	void MoveForward(float Value);
@@ -21,7 +26,18 @@ public:
 	void MoveRight(float Value);
 
 	void Move(float DeltaTime);
+
+	UFUNCTION()
+	void RotateRight(float AxisValue);
+
+	UFUNCTION()
+	void Fire();
+
+	UFUNCTION()
+	void FireSpecial();
 protected:
+	virtual void BeginPlay() override;
+	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Components")
 	UStaticMeshComponent* BodyMesh;
 
@@ -34,12 +50,31 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Components")
 	class UCameraComponent* Camera;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Movement")
-	float MoveSpeed = 100.0f;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Movement|Speed")
+	float MoveSpeed = 100;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Movement|Speed")
+	float RotationSpeed = 100;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Movement|Speed")
+	float InterpolationKey = 0.1f;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Turret|Speed")
+	float TurretRotationInterpolationKey = 0.5f;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Components")
-	float RotationSpeed = 100.0f;
 
 	float targetForwardAxisValue = 0.0f;
 	float targetRightAxisValue = 0.0f;
+	float TargetRightAxisValue;
+	float CurrentRightAxisValue;
+
+	UPROPERTY(VisibleDefaultsOnly, BlueprintReadWrite, Category = "Components")
+	UArrowComponent * CannonSetupPoint;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Turret|Cannon")
+	TSubclassOf<ACannon> CannonClass;
+	UPROPERTY()
+	ACannon * Cannon;
+	void SetupCannon();
+	
+
+
+	UPROPERTY()
+	ATankPlayerController* TankController;
 };
