@@ -5,7 +5,9 @@
 #include "CoreMinimal.h"
 #include "GameStructs.h"
 #include "GameFramework/Actor.h"
+#include "Projectile.h"
 #include "Cannon.generated.h"
+
 
 class UArrowComponent;
 
@@ -30,6 +32,9 @@ protected:
 	ECannonType Type = ECannonType::FireProjectile;
 	FTimerHandle ReloadTimerHandle;
 	bool ReadyToFire = false;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Fire params")
+	TSubclassOf<AProjectile> ProjectileClass;
 	
 public:	
 	// Sets default values for this actor's properties
@@ -38,7 +43,7 @@ public:
 	void Fire();
 	void FireSpecial();
 	bool IsReadyToFire();
-
+	void AddAmmo(int Quantity);
 
 protected:
 	// Called when the game starts or when spawned

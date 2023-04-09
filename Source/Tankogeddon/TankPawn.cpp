@@ -28,6 +28,10 @@ ATankPawn::ATankPawn()
 	SpringArm->bInheritRoll = false;
 	Camera = CreateDefaultSubobject<UCameraComponent>(TEXT("Camera"));
 	Camera->SetupAttachment(SpringArm);
+
+	
+	CannonSetupPoint = CreateDefaultSubobject<UArrowComponent>(TEXT("Cannon setup point"));
+	CannonSetupPoint->AttachToComponent(TurretMesh, FAttachmentTransformRules::KeepRelativeTransform);
 }
 
 // Called when the game starts or when spawned
@@ -35,10 +39,12 @@ void ATankPawn::BeginPlay()
 {
 	Super::BeginPlay();
 	TankController = Cast<ATankPlayerController>(GetController());
-	SetupCannon();
+	SetupCannon(CannonClass);
+	FVector CurrentLocation = GetActorLocation();
+	SetActorLocation(FVector(CurrentLocation.X, CurrentLocation.Y, 0));
 }
 
-void ATankPawn::SetupCannon()
+void ATankPawn::SetupCannon(TSubclassOf<ACannon> newCannon)
 {
 	if(Cannon) {
 		Cannon->Destroy();
@@ -112,9 +118,16 @@ void ATankPawn::Move(float DeltaTime)
 	FRotator currentRotation = GetActorRotation();
 	CurrentRightAxisValue = FMath::Lerp(CurrentRightAxisValue, TargetRightAxisValue, InterpolationKey);
 	
-	UE_LOG(LogTemp, Warning, TEXT("CurrentRightAxisValue = %f TargetRightAxisValue= %f"), CurrentRightAxisValue, TargetRightAxisValue);
 	float yawRotation = RotationSpeed * CurrentRightAxisValue * DeltaTime;
 	yawRotation = currentRotation.Yaw + yawRotation;
 	FRotator newRotation = FRotator(0, yawRotation, 0);
 	SetActorRotation(newRotation);
+}
+void ATankPawn::ChangeCannon()
+{
+	TSubclassOf<ACannon> CachedCannon;
+	CachedCannon = CannonClass;
+	CannonClass = SecondCannon;
+	SecondCannon = CachedCannon;
+	SetupCannon(CannonClass);
 }

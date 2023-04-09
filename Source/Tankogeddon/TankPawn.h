@@ -35,6 +35,10 @@ public:
 
 	UFUNCTION()
 	void FireSpecial();
+	void SetupCannon(TSubclassOf<ACannon> newCannon);
+	void ChangeCannon();
+	UPROPERTY()
+	ACannon * Cannon;
 protected:
 	virtual void BeginPlay() override;
 	
@@ -69,9 +73,9 @@ protected:
 	UArrowComponent * CannonSetupPoint;
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Turret|Cannon")
 	TSubclassOf<ACannon> CannonClass;
-	UPROPERTY()
-	ACannon * Cannon;
-	void SetupCannon();
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Turret|Cannon")
+	TSubclassOf<ACannon> SecondCannon;
+
 	
 
 
