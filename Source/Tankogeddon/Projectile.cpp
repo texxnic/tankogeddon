@@ -2,6 +2,8 @@
 
 
 #include "Projectile.h"
+
+
 #include "Components/StaticMeshComponent.h"
 #include "TimerManager.h"
 
@@ -27,12 +29,28 @@ void AProjectile::Start()
 void AProjectile::OnMeshOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
 	UE_LOG(LogTemp, Warning, TEXT("Projectile %s collided with %s. "), *GetName(), *OtherActor->GetName());
-	OtherActor->Destroy();
-	Destroy();
-	
+	AActor* owner = GetOwner();
+	AActor* ownerByOwner = owner != nullptr? owner->GetOwner(): nullptr;
+	if(OtherActor != owner && OtherActor != ownerByOwner)
+	{
+		IDamageTaker * damageTakerActor = Cast<IDamageTaker>(OtherActor);
+		if(damageTakerActor)
+		{
+			FDamageData damageData;
+			damageData.DamageValue = Damage;
+			damageData.Instigator = owner;
+			damageData.DamageMaker = this;
+			damageTakerActor->TakeDamage(damageData);
+		}
+		else
+		{
+			OtherActor -> Destroy();
+		}
+	}
 }
 void AProjectile::Move()
 {
 	FVector nextPosition = GetActorLocation() + GetActorForwardVector() * MoveSpeed* MoveRate;
 	SetActorLocation(nextPosition);
 }
+

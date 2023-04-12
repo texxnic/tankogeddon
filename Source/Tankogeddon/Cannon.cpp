@@ -6,6 +6,7 @@
 #include "Components/ArrowComponent.h"
 #include "Components/StaticMeshComponent.h"
 #include "TimerManager.h"
+#include "DamageTaker.h"
 #include "Engine/Engine.h"
 
 // Sets default values
@@ -53,7 +54,20 @@ void ACannon::Fire()
 	0.5f, 0, 5);
 			if(hitResult.GetActor())
 			{
-				hitResult.GetActor()->Destroy();
+				IDamageTaker* DamageTakerActor = Cast<IDamageTaker>(hitResult.GetActor());
+				if (DamageTakerActor)
+				{
+					FDamageData damageData;
+					damageData.DamageValue = 1.0f;
+					damageData.Instigator = GetOwner();
+					damageData.DamageMaker = this;
+
+					DamageTakerActor->TakeDamage(damageData);
+				}
+				else
+				{
+					hitResult.GetActor()->Destroy();
+				}
 			}
 		}
 		else

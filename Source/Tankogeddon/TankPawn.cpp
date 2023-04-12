@@ -57,13 +57,6 @@ void ATankPawn::SetupCannon(TSubclassOf<ACannon> newCannon)
 }
 
 
-void ATankPawn::Fire()
-{
-	if(Cannon) {
-		Cannon->Fire();
-	}
-}
-
 void ATankPawn::FireSpecial()
 {
 	if(Cannon) {

@@ -2,6 +2,7 @@
 
 #include "Cannon.h"
 #include "CoreMinimal.h"
+#include "Item.h"
 #include "GameFramework/Pawn.h"
 #include "TankPawn.generated.h"
 
@@ -12,7 +13,7 @@ class ATankPlayerController;
 class ACannon;
 
 UCLASS()
-class TANKOGEDDON_API ATankPawn : public APawn
+class TANKOGEDDON_API ATankPawn : public AItem
 {
 	GENERATED_BODY()
 
@@ -29,24 +30,15 @@ public:
 
 	UFUNCTION()
 	void RotateRight(float AxisValue);
-
-	UFUNCTION()
-	void Fire();
+	
 
 	UFUNCTION()
 	void FireSpecial();
 	void SetupCannon(TSubclassOf<ACannon> newCannon);
 	void ChangeCannon();
-	UPROPERTY()
-	ACannon * Cannon;
 protected:
 	virtual void BeginPlay() override;
 	
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Components")
-	UStaticMeshComponent* BodyMesh;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Components")
-	UStaticMeshComponent* TurretMesh;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Components")
 	class USpringArmComponent* SpringArm;
@@ -68,12 +60,7 @@ protected:
 	float targetRightAxisValue = 0.0f;
 	float TargetRightAxisValue;
 	float CurrentRightAxisValue;
-
-	UPROPERTY(VisibleDefaultsOnly, BlueprintReadWrite, Category = "Components")
-	UArrowComponent * CannonSetupPoint;
-	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Turret|Cannon")
-	TSubclassOf<ACannon> CannonClass;
-	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Turret|Cannon")
+	
 	TSubclassOf<ACannon> SecondCannon;
 
 	

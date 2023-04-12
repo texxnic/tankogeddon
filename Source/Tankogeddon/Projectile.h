@@ -4,6 +4,8 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
+#include "DamageTaker.h"
+#include "GameStructs.h"
 #include "Projectile.generated.h"
 
 UCLASS()
