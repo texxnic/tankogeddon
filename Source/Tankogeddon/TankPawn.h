@@ -35,10 +35,20 @@ public:
 	UFUNCTION()
 	void FireSpecial();
 	void SetupCannon(TSubclassOf<ACannon> newCannon);
-	void ChangeCannon();
+	void SwapCannon();
+
+	UFUNCTION()
+	TArray<FVector> GetPatrollingPoints() {return PatrollingPoints;};
+	UFUNCTION()
+	float GetMovementAccurency() {return MovementAccurency; };
+
 protected:
 	virtual void BeginPlay() override;
-	
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "AI|Move params|Patrolpoints" , Meta = (MakeEditWidget = true))
+	TArray<FVector> PatrollingPoints;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "AI|Moveparams|Accurency")
+	float MovementAccurency = 50;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Components")
 	class USpringArmComponent* SpringArm;
@@ -52,8 +62,7 @@ protected:
 	float RotationSpeed = 100;
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Movement|Speed")
 	float InterpolationKey = 0.1f;
-	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Turret|Speed")
-	float TurretRotationInterpolationKey = 0.5f;
+
 
 
 	float targetForwardAxisValue = 0.0f;

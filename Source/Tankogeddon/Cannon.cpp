@@ -30,6 +30,12 @@ void ACannon::Fire()
 		return; }
 	--AmmoAmount;
 	ReadyToFire = false;
+
+	
+	ReadyToFire = false;
+	ShootEffect->ActivateSystem();
+	AudioEffect->Play();
+	
 	if(Type == ECannonType::FireProjectile)
 	{
 		GEngine->AddOnScreenDebugMessage(10, 1,FColor::Green, FString::Printf(TEXT("Fire - projectile, ammo: %i"), AmmoAmount));
@@ -107,5 +113,5 @@ void ACannon::Tick(float DeltaTime)
 }
 void ACannon::AddAmmo(int Quantity)
 {
-	AmmoAmount = AmmoAmount + Quantity;
+	AmmoAmount +=  Quantity;
 }

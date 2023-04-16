@@ -3,7 +3,9 @@
 #include "CoreMinimal.h"
 #include "DamageTaker.h"
 #include "GameFramework/Pawn.h"
+#include "Kismet/KismetMathLibrary.h"
 #include "Item.generated.h"
+
 
 class UStaticMeshComponent;
 class ACannon;
@@ -24,6 +26,12 @@ public:
 	
 	UFUNCTION()
 	void Fire();
+	UFUNCTION()
+	FVector GetTurretForwardVector() ;
+	FVector GetEyesPosition();
+	bool IsPlayerSeen(AItem* Spectator, AItem* Player);
+	UFUNCTION()
+void RotateTurretTo(FVector TargetPosition);
 
 	
 	UPROPERTY()
@@ -51,5 +59,8 @@ protected:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Components")
 	class UHealthComponent* HealthComponent;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Turret|Speed")
+	float TurretRotationInterpolationKey = 0.5f;
+	
 
 };

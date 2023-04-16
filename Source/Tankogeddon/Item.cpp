@@ -52,3 +52,45 @@ void AItem::DamageTaked(float Value)
 {
 	UE_LOG(LogTemp, Warning, TEXT("Unit %s taked damage: %f, health: %f"), *GetName(), Value, HealthComponent->GetHealth());
 }
+
+FVector AItem::GetTurretForwardVector()
+{
+	return TurretMesh->GetForwardVector();
+}
+void AItem::RotateTurretTo(FVector TargetPosition)
+{
+	FRotator targetRotation =
+  UKismetMathLibrary::FindLookAtRotation(GetActorLocation(), TargetPosition);
+	FRotator currRotation = TurretMesh->GetComponentRotation();
+	targetRotation.Pitch = currRotation.Pitch;
+	targetRotation.Roll = currRotation.Roll;
+	TurretMesh->SetWorldRotation(FMath::Lerp(currRotation, targetRotation,
+  TurretRotationInterpolationKey));
+}
+FVector AItem::GetEyesPosition()
+{
+	return CannonSetupPoint->GetComponentLocation();
+}
+bool AItem::IsPlayerSeen(AItem* Spectator, AItem* Player)
+{
+	FVector playerPos = Player->GetActorLocation();
+	FVector eyesPos = Spectator->GetEyesPosition();
+
+	FHitResult hitResult;
+	FCollisionQueryParams traceParams = FCollisionQueryParams(FName(TEXT("FireTrace")), true, this);
+
+	traceParams.bTraceComplex = true;
+	traceParams.AddIgnoredActor(Spectator);
+	traceParams.bReturnPhysicalMaterial = false;
+	if (GetWorld()->LineTraceSingleByChannel(hitResult, eyesPos, playerPos, ECC_Visibility, traceParams))
+	{
+		if (hitResult.GetActor())
+		{
+			DrawDebugLine(GetWorld(), eyesPos, hitResult.Location, FColor::Cyan, false, 0.5f, 0, 10);
+			return hitResult.GetActor() == Player;
+		}
+	}
+	DrawDebugLine(GetWorld(), eyesPos, hitResult.Location, FColor::Cyan, false, 0.5f, 0, 10);
+	return false;
+}
+

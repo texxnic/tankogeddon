@@ -72,6 +72,6 @@ void ATankPlayerController::ChangeCannon()
 {
 	if (TankPawn)
 	{
-		TankPawn->ChangeCannon();
+		TankPawn->SwapCannon();
 	}
 }

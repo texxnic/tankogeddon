@@ -48,7 +48,7 @@ void ATurret::Targeting()
 	if (IsPLayerInRange())
 	{
 		RotateToPlayer();
-		if (CanFire())
+		if (this->IsPlayerSeen(this, Cast<AItem>(PlayerPawn)) && CanFire())
 		{
 			Fire();
 		}
