@@ -33,8 +33,8 @@ void ACannon::Fire()
 
 	
 	ReadyToFire = false;
-	ShootEffect->ActivateSystem();
-	AudioEffect->Play();
+	if(ShootEffect) ShootEffect->ActivateSystem();
+	if(AudioEffect) AudioEffect->Play();
 	
 	if(Type == ECannonType::FireProjectile)
 	{

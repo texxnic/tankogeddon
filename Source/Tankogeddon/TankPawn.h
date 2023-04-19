@@ -4,6 +4,7 @@
 #include "CoreMinimal.h"
 #include "Item.h"
 #include "GameFramework/Pawn.h"
+#include "Engine/TargetPoint.h"
 #include "TankPawn.generated.h"
 
 class UStaticMeshComponent;
@@ -37,16 +38,17 @@ public:
 	void SetupCannon(TSubclassOf<ACannon> newCannon);
 	void SwapCannon();
 
-	UFUNCTION()
-	TArray<FVector> GetPatrollingPoints() {return PatrollingPoints;};
+	TArray<FVector> GetPatrollingPoints();
+	void SetPatrollingPoints(TArray<ATargetPoint*> NewPatrollingPoints);
+	
 	UFUNCTION()
 	float GetMovementAccurency() {return MovementAccurency; };
 
 protected:
 	virtual void BeginPlay() override;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "AI|Move params|Patrolpoints" , Meta = (MakeEditWidget = true))
-	TArray<FVector> PatrollingPoints;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "AI|Move params|Patrol points" , Meta = (MakeEditWidget = true))
+	TArray<ATargetPoint*> PatrollingPoints;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "AI|Moveparams|Accurency")
 	float MovementAccurency = 50;
 

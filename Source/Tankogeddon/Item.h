@@ -4,6 +4,7 @@
 #include "DamageTaker.h"
 #include "GameFramework/Pawn.h"
 #include "Kismet/KismetMathLibrary.h"
+#include "HealthComponent.h"
 #include "Item.generated.h"
 
 

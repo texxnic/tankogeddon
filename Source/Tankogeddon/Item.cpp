@@ -1,6 +1,5 @@
 #include "Item.h"
 #include "Cannon.h"
-#include "HealthComponent.h"
 #include "Components/ArrowComponent.h"
 #include "Components/BoxComponent.h"
 
