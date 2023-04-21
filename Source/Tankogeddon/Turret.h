@@ -22,7 +22,7 @@ class TANKOGEDDON_API ATurret : public AItem
 	
 public:	
 	ATurret();
-
+	virtual void PostInitializeComponents() override;
 
 	
 

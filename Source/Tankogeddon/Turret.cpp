@@ -87,3 +87,14 @@ bool ATurret::CanFire()
 	float AimAngle = FMath::RadiansToDegrees(acosf(FVector::DotProduct(targetingDir, dirToPlayer)));
 	return AimAngle <= Accurency;
 }
+
+void ATurret::PostInitializeComponents()
+{
+	Super::PostInitializeComponents();
+	UStaticMesh * turretMeshTemp = LoadObject<UStaticMesh>(this, *TurretMeshPath);
+	if(turretMeshTemp)
+		TurretMesh->SetStaticMesh(turretMeshTemp);
+	UStaticMesh * bodyMeshTemp = LoadObject<UStaticMesh>(this, *BodyMeshPath);
+	if(bodyMeshTemp)
+		BodyMesh->SetStaticMesh(bodyMeshTemp);
+}

@@ -22,13 +22,28 @@ protected:
 	float MoveRate = 0.005f;
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Damage")
 	float Damage = 1;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Damage")
+	float PushForce = 1000;
 	FTimerHandle MovementTimerHandle;
+
+	UPROPERTY(BlueprintReadWrite, Category = "Damage")
+	float ExplodeRadius = 200;
+
+	UPROPERTY(BlueprintReadWrite, Category = "Damage")
+	bool Explosive = true;
+	
+	UFUNCTION()
+	void SetDamageToActor(AActor* OtherActor);
+
+	UFUNCTION()
+	void MakeImpulse(AActor* OtherActor);
+
 	
 public:	
 	// Sets default values for this actor's properties
 	AProjectile();
-
-	void Start();
+	void Explode();
+	virtual void Start();
 protected:
 
 	UFUNCTION()
@@ -36,7 +51,7 @@ protected:
 OtherActor, class UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool
 bFromSweep, const FHitResult& SweepResult);
 	UFUNCTION()
-		void Move();
+	virtual void Move();
 
 
 
